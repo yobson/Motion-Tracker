@@ -51,6 +51,7 @@ void createTrackbars() {
 
 
 	namedWindow(trackbarWindowName, 0);
+	resizeWindow(trackbarWindowName, 330, 500);
 	//create memory to store trackbar name on window
 	char TrackbarName[50];
 	sprintf(TrackbarName, "H_MIN", H_MIN);
@@ -212,13 +213,13 @@ int main(int argc, char* argv[])
 	//video capture object to acquire webcam feed
 	VideoCapture capture;
 	//open capture object at location zero (default location for webcam)
-	capture.open(1);
+	capture.open(0);
 	//set height and width of capture frame
 	capture.set(CV_CAP_PROP_FRAME_WIDTH, FRAME_WIDTH);
 	capture.set(CV_CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT);
 	//start an infinite loop where webcam feed is copied to cameraFeed matrix
 	//all of our operations will be performed within this loop
-	printINS(usey, useMorphOps, start, newX, newY);
+	printINS(usey, useMorphOps, start, offsetX, offsetY);
 	while (loop) {
 		capture.read(cameraFeed);
 		cvtColor(cameraFeed, HSV, COLOR_BGR2HSV);
@@ -264,9 +265,9 @@ int main(int argc, char* argv[])
 		short pKeyState = GetAsyncKeyState('P');
 		short dKeyState = GetAsyncKeyState('D');
 
-		if (qKeyState) { loop = false; printINS(usey, useMorphOps, start, newX, newY); }
-		if (rKeyState) {  begin_time = clock(); start = true; printINS(usey, useMorphOps, start, newX, newY); }
-		if (sKeyState) { start = !start; printINS(usey, useMorphOps, start, newX, newY); }
+		if (qKeyState) { loop = false; printINS(usey, useMorphOps, start, offsetX, offsetY); }
+		if (rKeyState) {  begin_time = clock(); start = true; printINS(usey, useMorphOps, start, offsetX, offsetY); }
+		if (sKeyState) { start = !start; printINS(usey, useMorphOps, start, offsetX, offsetY); }
 		if (cKeyState) { 
 			offsetX = x; offsetY = y;
 			plotdata.close();
@@ -274,11 +275,11 @@ int main(int argc, char* argv[])
 			plotdata << "";
 			plotdata.close();
 			plotdata.open("C:/gnuplot/plot.dat", std::ios_base::app);
-			printINS(usey, useMorphOps, start, newX, newY);
+			printINS(usey, useMorphOps, start, offsetX, offsetY);
 		}
-		if (mKeyState) { useMorphOps = !useMorphOps; printINS(usey, useMorphOps, start, newX, newY); }
-		if (pKeyState) { usey = !usey; printINS(usey, useMorphOps, start, newX, newY); }
-		if (dKeyState) { debug = !debug; printINS(usey, useMorphOps, start, newX, newY); }
+		if (mKeyState) { useMorphOps = !useMorphOps; printINS(usey, useMorphOps, start, offsetX, offsetY); }
+		if (pKeyState) { usey = !usey; printINS(usey, useMorphOps, start, offsetX, offsetY); }
+		if (dKeyState) { debug = !debug; printINS(usey, useMorphOps, start, offsetX, offsetY); }
 
 		oldX = x;
 		oldY = y;
